@@ -1,30 +1,24 @@
 package com.jobJunior.cursomc.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobJunior.cursomc.modelo.Categoria;
+import com.jobJunior.cursomc.service.CategoriaService;
 
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaController {
 
+	@Autowired
+	private CategoriaService categoriaService;
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Categoria> listar() {
-		
-		Categoria cat1 = new Categoria(1, "Informatica");
-		Categoria cat2 = new Categoria(2, "Banco de Dados!");
-		
-		List<Categoria> list = new ArrayList<>();
-		list.add(cat1);
-		list.add(cat2);
-		list.add(cat2);
-		
-		return list;
+	public ResponseEntity<Categoria> finById(@PathVariable Integer id){
+		Categoria categoria = categoriaService.findById(id);
+		return ResponseEntity.ok().body(categoria);
 	}
+	
 }
