@@ -18,10 +18,11 @@ public class CategoriaController {
 	public List<Categoria> listar() {
 		
 		Categoria cat1 = new Categoria(1, "Informatica");
-		Categoria cat2 = new Categoria(2, "Banco de Dados");
+		Categoria cat2 = new Categoria(2, "Banco de Dados!");
 		
 		List<Categoria> list = new ArrayList<>();
 		list.add(cat1);
+		list.add(cat2);
 		list.add(cat2);
 		
 		return list;
