@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.jobJunior.cursomc.modelo.enuns.TipoCliente;
 
 @Entity
@@ -25,9 +26,10 @@ public class Cliente implements Serializable {
 	private Integer id;
 	private String nome;
 	private String email;
-	private String CpfOuCNPJ;
+	private String Cpf_Ou_CNPJ;
 	private Integer tipo;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 
@@ -38,12 +40,12 @@ public class Cliente implements Serializable {
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, String email, String cpfOuCNPJ, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String Cpf_Ou_CNPJ, TipoCliente tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		CpfOuCNPJ = cpfOuCNPJ;
+		this.Cpf_Ou_CNPJ = Cpf_Ou_CNPJ;
 		this.tipo = tipo.getCod();
 	}
 
@@ -71,12 +73,12 @@ public class Cliente implements Serializable {
 		this.email = email;
 	}
 
-	public String getCpfOuCNPJ() {
-		return CpfOuCNPJ;
+	public String getCpf_Ou_CNPJ() {
+		return Cpf_Ou_CNPJ;
 	}
 
-	public void setCpfOuCNPJ(String cpfOuCNPJ) {
-		CpfOuCNPJ = cpfOuCNPJ;
+	public void setCpf_Ou_CNPJ(String Cpf_Ou_CNPJ) {
+		this.Cpf_Ou_CNPJ = Cpf_Ou_CNPJ;
 	}
 
 	public TipoCliente getTipo() {
