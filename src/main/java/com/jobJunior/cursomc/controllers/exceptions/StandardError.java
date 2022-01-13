@@ -1,4 +1,4 @@
-package com.jobJunior.cursomc.controllersexceptions;
+package com.jobJunior.cursomc.controllers.exceptions;
 
 import java.io.Serializable;
 
