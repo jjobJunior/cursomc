@@ -3,12 +3,15 @@ package com.jobJunior.cursomc.modelo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Categoria implements Serializable {
@@ -17,6 +20,8 @@ public class Categoria implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@NotBlank
 	private String nome;
 
 	@ManyToMany(mappedBy = "categorias")
@@ -29,7 +34,7 @@ public class Categoria implements Serializable {
 	public Categoria(Integer id, String nome) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.nome = Objects.requireNonNull(nome);
 	}
 
 	public Integer getId() {
