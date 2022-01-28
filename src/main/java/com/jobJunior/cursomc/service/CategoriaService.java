@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.jobJunior.cursomc.dto.CategoriaDTO;
 import com.jobJunior.cursomc.modelo.Categoria;
 import com.jobJunior.cursomc.repositories.CategoriaRepository;
 import com.jobJunior.cursomc.service.exceptions.DataIntegratyViolationException;
@@ -53,5 +54,7 @@ public class CategoriaService {
 				return categoriaRepository.findAll(pageRequest);
 	}
 
-
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(),categoriaDTO.getNome());
+	}
 }
