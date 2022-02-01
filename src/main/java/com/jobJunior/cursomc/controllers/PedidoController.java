@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobJunior.cursomc.modelo.Pedido;
+import com.jobJunior.cursomc.model.Pedido;
 import com.jobJunior.cursomc.service.PedidoService;
 
 @RestController

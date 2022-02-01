@@ -1,8 +1,8 @@
-package com.jobJunior.cursomc.modelo;
+package com.jobJunior.cursomc.model;
 
 import javax.persistence.Entity;
 
-import com.jobJunior.cursomc.modelo.enuns.EstadoPagamento;
+import com.jobJunior.cursomc.model.enuns.EstadoPagamento;
 
 @Entity
 public class PagamentoComCartao extends Pagamento {

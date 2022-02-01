@@ -1,4 +1,4 @@
-package com.jobJunior.cursomc.modelo;
+package com.jobJunior.cursomc.model;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jobJunior.cursomc.modelo.enuns.EstadoPagamento;
+import com.jobJunior.cursomc.model.enuns.EstadoPagamento;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jobJunior.cursomc.dto.CategoriaDTO;
-import com.jobJunior.cursomc.modelo.Categoria;
+import com.jobJunior.cursomc.model.Categoria;
 import com.jobJunior.cursomc.service.CategoriaService;
 
 @RestController
@@ -52,9 +52,9 @@ public class CategoriaController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {
-		Categoria categoria = categoriaService.findById(id);
-		return ResponseEntity.ok().body(categoria);
+	public ResponseEntity<CategoriaDTO> findById(@PathVariable Integer id) {
+		CategoriaDTO categoriaDTO = new CategoriaDTO(categoriaService.findById(id));
+		return ResponseEntity.ok().body(categoriaDTO);
 	}
 
 	@PostMapping
@@ -77,6 +77,6 @@ public class CategoriaController {
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		categoriaService.delete(id);
 		return ResponseEntity.noContent().build();
-	}// DataIntegrityViolationException
+	}
 
 }

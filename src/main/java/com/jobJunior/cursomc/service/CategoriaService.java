@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.jobJunior.cursomc.dto.CategoriaDTO;
-import com.jobJunior.cursomc.modelo.Categoria;
+import com.jobJunior.cursomc.model.Categoria;
 import com.jobJunior.cursomc.repositories.CategoriaRepository;
 import com.jobJunior.cursomc.service.exceptions.DataIntegratyViolationException;
 import com.jobJunior.cursomc.service.exceptions.ObjectNotFoundException;

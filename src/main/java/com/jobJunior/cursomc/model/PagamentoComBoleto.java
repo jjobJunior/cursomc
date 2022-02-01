@@ -1,11 +1,11 @@
-package com.jobJunior.cursomc.modelo;
+package com.jobJunior.cursomc.model;
 
 import java.util.Date;
 
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jobJunior.cursomc.modelo.enuns.EstadoPagamento;
+import com.jobJunior.cursomc.model.enuns.EstadoPagamento;
 
 @Entity
 public class PagamentoComBoleto extends Pagamento {

@@ -1,4 +1,4 @@
-package com.jobJunior.cursomc.modelo;
+package com.jobJunior.cursomc.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jobJunior.cursomc.modelo.enuns.TipoCliente;
+import com.jobJunior.cursomc.model.enuns.TipoCliente;
 
 @Entity
 public class Cliente implements Serializable {
@@ -49,7 +49,7 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.Cpf_Ou_CNPJ = Cpf_Ou_CNPJ;
-		this.tipo = tipo.getCod();
+		this.tipo = (tipo == null) ? null : tipo.getCod();
 	}
 
 	public Integer getId() {

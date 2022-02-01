@@ -3,7 +3,7 @@ package com.jobJunior.cursomc.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jobJunior.cursomc.modelo.Categoria;
+import com.jobJunior.cursomc.model.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {

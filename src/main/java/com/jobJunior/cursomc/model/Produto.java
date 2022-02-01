@@ -1,4 +1,4 @@
-package com.jobJunior.cursomc.modelo;
+package com.jobJunior.cursomc.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

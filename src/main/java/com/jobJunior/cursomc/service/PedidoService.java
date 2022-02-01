@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jobJunior.cursomc.modelo.Pedido;
+import com.jobJunior.cursomc.model.Pedido;
 import com.jobJunior.cursomc.repositories.PedidoRepository;
 import com.jobJunior.cursomc.service.exceptions.ObjectNotFoundException;
 
