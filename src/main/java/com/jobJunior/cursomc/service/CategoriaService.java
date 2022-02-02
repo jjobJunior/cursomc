@@ -33,14 +33,16 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		findById(obj.getId());
+		Categoria newObj = findById(obj.getId());
+		updateData(newObj, obj);
 		return categoriaRepository.save(obj);
 	}
 
 	public void delete(Integer id) {
 		Categoria categoria = findById(id);
 		if (categoria.getProdutos().size() != 0) {
-			throw new DataIntegratyViolationException("A categoria não pode ser excluida pois esta associada a produtos!");
+			throw new DataIntegratyViolationException(
+					"A categoria não pode ser excluida pois esta associada a produtos!");
 		}
 		categoriaRepository.deleteById(id);
 	}
@@ -49,12 +51,16 @@ public class CategoriaService {
 		return categoriaRepository.findAll();
 	}
 
-	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String direction, String orderBy){
-		PageRequest pageRequest =  PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-				return categoriaRepository.findAll(pageRequest);
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return categoriaRepository.findAll(pageRequest);
 	}
 
 	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
-		return new Categoria(categoriaDTO.getId(),categoriaDTO.getNome());
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+	}
+
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 }
