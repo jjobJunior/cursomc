@@ -67,8 +67,8 @@ public class ClienteService {
 		return clienteRepository.findAll(pageRequest);
 	}
 
-	public Cliente fromDTO(ClienteDTO clienteDTO) {
-		return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+	public Cliente fromDTO(@Valid ClienteDTO objDto) {
+		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
 	}
 
 	public Cliente fromDTO(@Valid ClienteNewDTO objDto) {
@@ -90,5 +90,7 @@ public class ClienteService {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
 	}
+
+
 
 }
