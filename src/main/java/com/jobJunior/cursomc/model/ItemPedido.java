@@ -1,6 +1,8 @@
 package com.jobJunior.cursomc.model;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -107,6 +109,21 @@ public class ItemPedido implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		NumberFormat nFormat = NumberFormat.getCurrencyInstance((new Locale("pt", "BR")));
+		StringBuilder builder = new StringBuilder();
+		builder.append(getProduto().getNome());
+		builder.append(", quantidade: ");
+		builder.append(getQuantidade());
+		builder.append(", Preco unitario: ");
+		builder.append(nFormat.format(getPreco()));
+		builder.append(", SubTotal: ");
+		builder.append(nFormat.format(getSubTotal()));
+		builder.append("\n");
+		return builder.toString();
 	}
 
 }
