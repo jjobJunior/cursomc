@@ -30,8 +30,7 @@ public class ProdutoController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<ProdutoDTO>> findAllPage(
-			@RequestParam(value = "nome", defaultValue = "") String nome,
+	public ResponseEntity<Page<ProdutoDTO>> findAllPage(@RequestParam(value = "nome", defaultValue = "") String nome,
 			@RequestParam(value = "categorias", defaultValue = "") String categorias,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
@@ -45,5 +44,4 @@ public class ProdutoController {
 		return ResponseEntity.ok().body(listDtos);
 	}
 
-	
 }
