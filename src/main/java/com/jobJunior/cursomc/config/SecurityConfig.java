@@ -7,28 +7,35 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.jobJunior.cursomc.security.JWTAuthenticationFilter;
+import com.jobJunior.cursomc.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
+	private JWTUtil jwtUtil;
+
+	@Autowired
 	private Environment environment;
 
-	public static final String[] PUBLIC_MATCHERS = { "/h2-console/**"};
-	public static final String[] PUBLIC_MATCHERS_GET =
-		{
-				"/produtos/**",
-				"/categorias/**",
-				"/clientes/**"};
+	@Autowired
+	private UserDetailsService userDetailsService;
+
+	public static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
+	public static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/categorias/**", "/clientes/**" };
 
 	@Override
 	public void configure(HttpSecurity httpSecurity) throws Exception {
@@ -38,11 +45,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 
 		httpSecurity.cors().and().csrf().disable();
-		httpSecurity.authorizeRequests()
-			.antMatchers(PUBLIC_MATCHERS).permitAll()
-			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-			.anyRequest().authenticated();
+		httpSecurity.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll()
+				.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll().anyRequest().authenticated();
+		httpSecurity.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
+
+	public void configure(AuthenticationManagerBuilder authentication) throws Exception {
+		authentication.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 
 	@Bean
@@ -51,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 		return source;
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
