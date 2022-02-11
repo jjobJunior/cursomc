@@ -17,9 +17,12 @@ import com.jobJunior.cursomc.dto.ClienteNewDTO;
 import com.jobJunior.cursomc.model.Cidade;
 import com.jobJunior.cursomc.model.Cliente;
 import com.jobJunior.cursomc.model.Endereco;
+import com.jobJunior.cursomc.model.enuns.Perfil;
 import com.jobJunior.cursomc.model.enuns.TipoCliente;
 import com.jobJunior.cursomc.repositories.ClienteRepository;
 import com.jobJunior.cursomc.repositories.EnderecoRepository;
+import com.jobJunior.cursomc.security.UserSpringSecurity;
+import com.jobJunior.cursomc.service.exceptions.AuthorizationExcepton;
 import com.jobJunior.cursomc.service.exceptions.DataIntegratyViolationException;
 import com.jobJunior.cursomc.service.exceptions.ObjectNotFoundException;
 
@@ -36,6 +39,10 @@ public class ClienteService {
 	private BCryptPasswordEncoder pEncoder;
 
 	public Cliente findById(Integer id) {
+		UserSpringSecurity uSecurity = UserService.authenticated();
+		if (uSecurity == null || !uSecurity.hasHole(Perfil.ADMIN) && !id.equals(uSecurity.getId())) {
+			throw new AuthorizationExcepton("Acesso negado! ");
+		}
 		Optional<Cliente> obj = clienteRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"O Objeto não foi encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
