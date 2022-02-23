@@ -1,5 +1,6 @@
 package com.jobJunior.cursomc.service;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jobJunior.cursomc.dto.ClienteDTO;
 import com.jobJunior.cursomc.dto.ClienteNewDTO;
@@ -38,6 +40,9 @@ public class ClienteService {
 	@Autowired
 	private BCryptPasswordEncoder pEncoder;
 
+	@Autowired
+	private S3Service s3Service;
+	
 	public Cliente findById(Integer id) {
 		UserSpringSecurity uSecurity = UserService.authenticated();
 		if (uSecurity == null || !uSecurity.hasHole(Perfil.ADMIN) && !id.equals(uSecurity.getId())) {
@@ -102,6 +107,9 @@ public class ClienteService {
 		newObj.setEmail(obj.getEmail());
 	}
 
-
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		
+		return s3Service.uploadFile(multipartFile);
+	}
 
 }
