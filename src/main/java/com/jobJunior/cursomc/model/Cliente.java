@@ -30,12 +30,12 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	
+
 	@Column(unique = true)
 	private String email;
 	private String Cpf_Ou_CNPJ;
 	private Integer tipo;
-	
+
 	@JsonIgnore
 	private String senha;
 
@@ -45,14 +45,16 @@ public class Cliente implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefoneSet = new HashSet<>();
-	
+
 	@CollectionTable(name = "PERFIS")
-	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<Integer> perfis = new HashSet<>(); 
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Set<Integer> perfis = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
+
+	private String imageURL;
 
 	public Cliente() {
 		addPerfil(Perfil.CLIENTE);
@@ -108,7 +110,7 @@ public class Cliente implements Serializable {
 	public void setTipo(TipoCliente tipo) {
 		this.tipo = tipo.getCod();
 	}
-	
+
 	public String getSenha() {
 		return senha;
 	}
@@ -133,20 +135,28 @@ public class Cliente implements Serializable {
 		this.telefoneSet = telefoneSet;
 	}
 
-	public Set<Perfil> getPerfis(){
+	public Set<Perfil> getPerfis() {
 		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
-	
+
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
 	}
-	
+
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 	@Override
@@ -173,5 +183,4 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-
 }

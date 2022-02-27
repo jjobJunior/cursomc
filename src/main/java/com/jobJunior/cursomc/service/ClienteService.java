@@ -33,16 +33,16 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
+
 	@Autowired
 	private EnderecoRepository enderecoRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder pEncoder;
 
 	@Autowired
 	private S3Service s3Service;
-	
+
 	public Cliente findById(Integer id) {
 		UserSpringSecurity uSecurity = UserService.authenticated();
 		if (uSecurity == null || !uSecurity.hasHole(Perfil.ADMIN) && !id.equals(uSecurity.getId())) {
@@ -84,13 +84,15 @@ public class ClienteService {
 	}
 
 	public Cliente fromDTO(@Valid ClienteDTO objDto) {
-		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null,null);
+		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null, null);
 	}
 
 	public Cliente fromDTO(@Valid ClienteNewDTO objDto) {
-		Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getcpf_ou_cnpj(), TipoCliente.toEnum(objDto.getTipo()),pEncoder.encode(objDto.getSenha()));
+		Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getcpf_ou_cnpj(),
+				TipoCliente.toEnum(objDto.getTipo()), pEncoder.encode(objDto.getSenha()));
 		Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
-		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cliente, cid);
+		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
+				objDto.getBairro(), objDto.getCep(), cliente, cid);
 		cliente.getEnderecos().add(end);
 		cliente.getTelefoneSet().add(objDto.getTelefone1());
 		if (objDto.getTelefone2() != null) {
@@ -108,8 +110,15 @@ public class ClienteService {
 	}
 
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		UserSpringSecurity uSecurity = UserService.authenticated();
+		if (uSecurity == null) {
+			throw new AuthorizationExcepton("Acesso negado! ");
+		}
+		URI uri = s3Service.uploadFile(multipartFile);
 		
-		return s3Service.uploadFile(multipartFile);
+		Cliente cli = findById(uSecurity.getId());
+		cli.setImageURL(uri.toString());
+		clienteRepository.save(cli);
+		return uri;
 	}
-
 }
