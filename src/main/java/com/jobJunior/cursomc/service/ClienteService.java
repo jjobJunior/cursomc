@@ -1,7 +1,5 @@
 package com.jobJunior.cursomc.service;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
@@ -52,6 +50,9 @@ public class ClienteService {
 	
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
+	
+	@Value("${img.profile.size}")
+	private Integer size;
 
 	public Cliente findById(Integer id) {
 		UserSpringSecurity uSecurity = UserService.authenticated();
@@ -125,6 +126,9 @@ public class ClienteService {
 			throw new AuthorizationExcepton("Acesso negado! ");
 		}
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		jpgImage = imageService.cropSquare(jpgImage);
+		jpgImage = imageService.resize(jpgImage, size);
+		
 		String fileName = prefix + uSecurity.getId() + ".jpg";
 
 		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
