@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.jobJunior.cursomc.service.exceptions.AuthorizationExcepton;
+import com.jobJunior.cursomc.service.exceptions.AuthorizationException;
 import com.jobJunior.cursomc.service.exceptions.DataIntegratyViolationException;
 import com.jobJunior.cursomc.service.exceptions.FileException;
 import com.jobJunior.cursomc.service.exceptions.ObjectNotFoundException;
@@ -48,8 +48,8 @@ public class ControllerExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
-	@ExceptionHandler(AuthorizationExcepton.class)
-	public ResponseEntity<StandardError> authorizationExcepton(AuthorizationExcepton e, HttpServletRequest request) {
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorizationException(AuthorizationException e, HttpServletRequest request) {
 		StandardError error = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(),
 				e.getMessage());
 

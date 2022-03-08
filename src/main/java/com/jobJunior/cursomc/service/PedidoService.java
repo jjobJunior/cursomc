@@ -19,7 +19,7 @@ import com.jobJunior.cursomc.repositories.ItemPedidoRepository;
 import com.jobJunior.cursomc.repositories.PagamentoRepository;
 import com.jobJunior.cursomc.repositories.PedidoRepository;
 import com.jobJunior.cursomc.security.UserSpringSecurity;
-import com.jobJunior.cursomc.service.exceptions.AuthorizationExcepton;
+import com.jobJunior.cursomc.service.exceptions.AuthorizationException;
 import com.jobJunior.cursomc.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -79,7 +79,7 @@ public class PedidoService {
 	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 		UserSpringSecurity uSecurity = UserService.authenticated();
 		if (uSecurity == null) {
-			throw new AuthorizationExcepton("Acesso negado! ");
+			throw new AuthorizationException("Acesso negado! ");
 		}
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		Cliente cliente = clienteService.findById(uSecurity.getId());

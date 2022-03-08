@@ -26,7 +26,7 @@ import com.jobJunior.cursomc.model.enuns.TipoCliente;
 import com.jobJunior.cursomc.repositories.ClienteRepository;
 import com.jobJunior.cursomc.repositories.EnderecoRepository;
 import com.jobJunior.cursomc.security.UserSpringSecurity;
-import com.jobJunior.cursomc.service.exceptions.AuthorizationExcepton;
+import com.jobJunior.cursomc.service.exceptions.AuthorizationException;
 import com.jobJunior.cursomc.service.exceptions.DataIntegratyViolationException;
 import com.jobJunior.cursomc.service.exceptions.ObjectNotFoundException;
 
@@ -47,17 +47,17 @@ public class ClienteService {
 
 	@Autowired
 	private S3Service s3Service;
-	
+
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
-	
+
 	@Value("${img.profile.size}")
 	private Integer size;
 
 	public Cliente findById(Integer id) {
 		UserSpringSecurity uSecurity = UserService.authenticated();
 		if (uSecurity == null || !uSecurity.hasHole(Perfil.ADMIN) && !id.equals(uSecurity.getId())) {
-			throw new AuthorizationExcepton("Acesso negado! ");
+			throw new AuthorizationException("Acesso negado! ");
 		}
 		Optional<Cliente> obj = clienteRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -87,6 +87,21 @@ public class ClienteService {
 
 	public List<Cliente> findAll() {
 		return clienteRepository.findAll();
+	}
+
+	public Cliente findByEmail(String email) {
+
+		UserSpringSecurity user = UserService.authenticated();
+		if (user == null || !user.hasHole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+
+		Cliente obj = clienteRepository.findByEmail(email);
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto nao encontrado! Id: " + user.getId() + "Tipo: " + Cliente.class.getName());
+		}
+		return obj;
 	}
 
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
@@ -123,12 +138,12 @@ public class ClienteService {
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
 		UserSpringSecurity uSecurity = UserService.authenticated();
 		if (uSecurity == null) {
-			throw new AuthorizationExcepton("Acesso negado! ");
+			throw new AuthorizationException("Acesso negado! ");
 		}
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
-		
+
 		String fileName = prefix + uSecurity.getId() + ".jpg";
 
 		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");

@@ -49,6 +49,12 @@ public class ClienteController {
 		return ResponseEntity.ok().body(listDtos);
 	}
 
+	@GetMapping(value = "/email")
+	public ResponseEntity<Cliente> findByEmail(@RequestParam(value = "value") String email){
+		Cliente obj = clienteService.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping(value = "/page")
 	public ResponseEntity<Page<ClienteDTO>> findAllPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
