@@ -32,6 +32,12 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaService;
 
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {	
+		Categoria obj = categoriaService.findById(id);
+		return ResponseEntity.ok().body(obj);
+	}
+
 	@GetMapping
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> list = categoriaService.findAll();
@@ -50,12 +56,6 @@ public class CategoriaController {
 		Page<CategoriaDTO> listDtos = list.map(obj -> new CategoriaDTO(obj));
 
 		return ResponseEntity.ok().body(listDtos);
-	}
-
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<CategoriaDTO> findById(@PathVariable Integer id) {
-		CategoriaDTO categoriaDTO = new CategoriaDTO(categoriaService.findById(id));
-		return ResponseEntity.ok().body(categoriaDTO);
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
