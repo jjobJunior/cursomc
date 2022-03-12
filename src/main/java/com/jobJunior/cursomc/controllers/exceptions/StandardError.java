@@ -7,17 +7,17 @@ public class StandardError implements Serializable {
 
 	private Long timesTamp;
 	private Integer status;
-	private String messageError;
+	private String error;
+	private String message;
+	private String path;
 
-	public StandardError() {
-		super();
-	}
-
-	public StandardError(Long timesTamp, Integer status, String messageError) {
+	public StandardError(Long timesTamp, Integer status, String error, String message, String path) {
 		super();
 		this.timesTamp = timesTamp;
 		this.status = status;
-		this.messageError = messageError;
+		this.error = error;
+		this.message = message;
+		this.path = path;
 	}
 
 	public Long getTimesTamp() {
@@ -37,11 +37,27 @@ public class StandardError implements Serializable {
 	}
 
 	public String getError() {
-		return messageError;
+		return error;
 	}
 
-	public void setError(String messageError) {
-		this.messageError = messageError;
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }
