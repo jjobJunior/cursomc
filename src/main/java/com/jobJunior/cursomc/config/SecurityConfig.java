@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	public static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
-	public static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/categorias/**" };
+	public static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/estados/**", "/categorias/**" };
 	public static final String[] PUBLIC_MATCHERS_POST = { "/clientes/", "/auth/forgot/**" };
 
 	@Override
