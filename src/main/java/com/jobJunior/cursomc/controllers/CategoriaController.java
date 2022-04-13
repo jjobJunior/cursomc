@@ -33,6 +33,7 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaService;
 
+	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Categoria> findById(@PathVariable Integer id) {	
 		Categoria obj = categoriaService.findById(id);
@@ -48,6 +49,7 @@ public class CategoriaController {
 		return ResponseEntity.ok().body(listDtos);
 	}
 
+	@CrossOrigin
 	@GetMapping(value = "/page")
 	public ResponseEntity<Page<CategoriaDTO>> findAllPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,

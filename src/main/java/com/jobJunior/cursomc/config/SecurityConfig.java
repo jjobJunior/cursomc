@@ -1,6 +1,7 @@
 package com.jobJunior.cursomc.config;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.jobJunior.cursomc.security.JWTAuthenticationFilter;
 import com.jobJunior.cursomc.security.JWTAuthorizationFilter;
@@ -37,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	public static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
+	public static final String[] PUBLIC_MATCHERS = { "/h2-console/**","/error","/" };
 	public static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/estados/**", "/categorias/**" };
 	public static final String[] PUBLIC_MATCHERS_POST = { "/clientes/", "/auth/forgot/**" };
 
@@ -62,6 +64,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authentication.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 
+	 @Bean // TODO Apenas para testes, remover em produção
+	  public CorsFilter corsFilter() {
+	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    final CorsConfiguration config = new CorsConfiguration();
+	    config.setAllowCredentials(true);
+	    // Don't do this in production, use a proper list of allowed origins
+	    // TODO trocar o endereço pelo do servidor de produção
+	    config.setAllowedOrigins(Collections.singletonList("http://localhost:8100"));
+	    config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+	    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+	    source.registerCorsConfiguration("/**", config);
+	    return new CorsFilter(source);
+	  }
+	
 	@Bean
 	CorsConfigurationSource configurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
